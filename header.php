@@ -1,5 +1,7 @@
 <?php
     session_start();
+	$_SESSION["id"] = "1337";
+	
     if(isset($_GET["deco"]))
     {
         session_destroy();
@@ -35,24 +37,24 @@
     if($droit == "moderateur")
     { ?>
         <a href="creer-article" class="a-null">Creation Articles</a>
-        <?php   
+        
+<?php    }
         if($droit == "administrateur")
         { ?>
             <a href="admin.php" class="a-null text-black">Admin</a>
-            <?php   }
-    }
+<?php   }
     ?>
 
-    <div id="header-article" class="flexc just-center">
-        <a href="articles.php" class="a-null">Articles &darr;</a>
+	<div id="header-article" class="flexc just-center">
+		<a href="articles.php" class="a-null">Articles &darr;</a>
 
-        <div id="article-list" class="flexc just-start">
-            <a href="articles.php?filter=plateform" class="a-null ">Plateformers</a>
-            <a href="articles.php?filter=FPS" class="a-null ">FPS</a>
-            <a href="articles.php?filter=RPG" class="a-null ">RPG</a>
-            <a href="articles.php?filter=MMORPG" class="a-null ">Meuporg</a>
-        </div>
-</div>
+		<div id="article-list" class="flexc just-start">
+			<a href="articles.php?categorie=1" class="a-null ">FPS</a>
+			<a href="articles.php?categorie=2" class="a-null ">RPG</a>
+			<a href="articles.php?categorie=3" class="a-null ">Meuporg</a>
+			<a href="articles.php?categorie=4" class="a-null ">Plateformers</a>
+		</div>
+	</div>
 
     
 

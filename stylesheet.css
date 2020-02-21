@@ -19,6 +19,12 @@ header nav a
     margin:0.5em;
     font-size:1.2em;
     color:#000000;
+	transition:color 0.3s ease;
+}
+
+header nav a:hover
+{
+	color:orange;
 }
 
 #header-article:hover>div
@@ -32,7 +38,7 @@ header nav a
     text-align: center;
     background:#dddddd;
     transform:translateY(-150px);
-    transition:transform 0.7s ease;
+    transition:transform 0.4s ease;
 }
 
 #article-list:hover{
@@ -42,9 +48,49 @@ header nav a
 #article-list a
 {
     margin:0px;
+	transition:color background 0.4s ease;
 }
 
 #article-list a:hover
 {
-    background-color:lightgrey;
+    background:lightgrey;
+}
+
+/*-------------------------------------------FOOTER----------------------------------------*/
+footer
+{
+	background:#dddddd;
+}
+footer nav
+{
+	width:80%;
+	height:10em;
+	margin:auto;
+}
+
+footer nav a
+{
+	transition:color 0.3s ease;
+}
+
+footer nav a:hover
+{
+	
+}
+
+footer nav div
+{
+	margin:10px;
+}
+
+footer nav h1
+{
+	margin-bottom:0px;
+	text-decoration:underline;
+}
+/*-------------------------------------------MAIN----------------------------------------*/
+
+main
+{
+	height:80vh;
 }
