@@ -17,25 +17,45 @@
 ?>
 
 
-<nav class="flexr just-between">
-    <a href="index.php" class="a-null text-black">Accueil</a>
-    <a href="articles.php" class="a-null text-black">Articles</a>
+<nav class="flexr just-between ">
+    <a href="index.php" class="a-null ">Accueil</a>
+    
     <?php
     if(isset($_SESSION["id"]))
     { ?>
-        <a href="index.php?deco=true">Déconnexion</a>
-        <a href="profil.php">Profil</a>
+        <a href="index.php?deco=true" class="a-null">Déconnexion</a>
+        <a href="profil.php" class="a-null">Profil</a>
 <?php }
-    if($droit == "moderateur" || $droit == "administrateur")
+    else
     { ?>
-        <a href="creer-article" class="a-null text-black">Creation Articles</a>
-<?php   
+        <a href="connexion.php" class="a-null">Connexion</a>
+        <a href="inscription.php" class="a-null">Inscription</a>
+        <?php }
+
+    if($droit == "moderateur")
+    { ?>
+        <a href="creer-article" class="a-null">Creation Articles</a>
+        <?php   
         if($droit == "administrateur")
         { ?>
             <a href="admin.php" class="a-null text-black">Admin</a>
-<?php   }
+            <?php   }
     }
-?>
+    ?>
+
+    <div id="header-article" class="flexc just-center">
+        <a href="articles.php" class="a-null">Articles &darr;</a>
+
+        <div id="article-list" class="flexc just-start">
+            <a href="articles.php?filter=plateform" class="a-null ">Plateformers</a>
+            <a href="articles.php?filter=FPS" class="a-null ">FPS</a>
+            <a href="articles.php?filter=RPG" class="a-null ">RPG</a>
+            <a href="articles.php?filter=MMORPG" class="a-null ">Meuporg</a>
+        </div>
+</div>
+
+    
 
 
+    <a href="profil.php" id="header-profil-image"><img src="Images/avatars/<?php //$avatar?>"/></a>
 </nav>
