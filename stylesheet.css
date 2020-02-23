@@ -6,12 +6,12 @@ body{
 header{
     background: #dddddd;
     box-shadow:0px 10px 7px 2px grey;
-    max-height:2.6em;
 }
 
 header nav
 {
     width:100%;
+	max-height:2.6em;
 }
 
 header nav a
@@ -25,6 +25,12 @@ header nav a
 header nav a:hover
 {
 	color:orange;
+}
+
+#header-article
+{
+	position:relative;
+	top:44px;
 }
 
 #header-article:hover>div
@@ -68,14 +74,9 @@ footer nav
 	margin:auto;
 }
 
-footer nav a
-{
-	transition:color 0.3s ease;
-}
-
 footer nav a:hover
 {
-	
+	text-decoration:underline;
 }
 
 footer nav div

@@ -12,7 +12,7 @@
 		<a href="articles.php?filter=plateformer" class="a-null text-black center">Plateformer</a> 
 		<a href="articles.php?filter=fps" class="a-null text-black center">FPS</a> 
 		<a href="articles.php?filter=rpg" class="a-null text-black center">RPG</a> 
-		<a href="articles.php?filter=meuporg" class="a-null text-black center">meuporg</a>
+		<a href="articles.php?filter=meuporg" class="a-null text-black center">Meuporg</a>
 	</div>
 	
 	<?php if($droit == "moderateur"){ ?>

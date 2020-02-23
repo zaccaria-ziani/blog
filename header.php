@@ -1,6 +1,5 @@
 <?php
     session_start();
-	$_SESSION["id"] = "1337";
 	
     if(isset($_GET["deco"]))
     {
@@ -54,6 +53,7 @@
 			<a href="articles.php?categorie=3" class="a-null ">Meuporg</a>
 			<a href="articles.php?categorie=4" class="a-null ">Plateformers</a>
 		</div>
+
 	</div>
 
     
