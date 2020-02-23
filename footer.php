@@ -9,10 +9,10 @@
 
 	<div class="flexc ">
 		<h1 class="center">Article</h1>
-		<a href="articles.php?filter=plateformer" class="a-null text-black center">Plateformer</a> 
-		<a href="articles.php?filter=fps" class="a-null text-black center">FPS</a> 
-		<a href="articles.php?filter=rpg" class="a-null text-black center">RPG</a> 
-		<a href="articles.php?filter=meuporg" class="a-null text-black center">Meuporg</a>
+		<a href="articles.php?categorie=1" class="a-null text-black center">Plateformer</a> 
+		<a href="articles.php?categorie=2" class="a-null text-black center">FPS</a> 
+		<a href="articles.php?categorie=3" class="a-null text-black center">RPG</a> 
+		<a href="articles.php?categorie=4" class="a-null text-black center">Meuporg</a>
 	</div>
 	
 	<?php if($droit == "moderateur"){ ?>
