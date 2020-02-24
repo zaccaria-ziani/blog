@@ -5,6 +5,12 @@
 					INNER JOIN droits ON utilisateurs.id_droits = droits.id
 					LIMIT 20")->fetchAll(PDO::FETCH_ASSOC);
 					
+	if(isset($_GET["delete"]))
+	{
+		$stmt->query("DELETE FROM `utilisateurs` WHERE `utilisateurs`.`id` = ".$_GET["delete"]);
+		header("location:admin.php");
+	}
+	
 	if(isset($_GET["usr"]))
 	{
 		$infos=$stmt->query("SELECT * FROM utilisateurs WHERE id =".$_GET["usr"])->fetch(PDO::FETCH_ASSOC);
@@ -12,7 +18,14 @@
 		{
 			if($_POST["usr-login"] != $infos["login"])
 			{
-				$query = $stmt->query("UPDATE utilisateurs SET login = '".$_POST["usr-login"]."' WHERE id =".$_GET["usr"]);
+				if(empty($stmt->query("SELECT * FROM utilisateurs WHERE login = '".$_POST["usr-login"]."'")->fetch()))
+				{
+					$query = $stmt->query("UPDATE utilisateurs SET login = '".$_POST["usr-login"]."' WHERE id =".$_GET["usr"]);					
+				}
+				else
+				{
+					header("location:admin.php?error=ldp");
+				}
 			}
 			if ($_POST["admin-usr-droit"] == "disabled")
 			{
@@ -22,9 +35,16 @@
 			{
 				$stmt->query("UPDATE utilisateurs SET id_droits = '".$_POST["admin-usr-droit"]."' WHERE id =".$_GET["usr"]);							
 			}
+			if($_POST["usr-mail"] != $infos["email"])
+			{
+				$stmt->query("UPDATE utilisateurs SET email= '".$_POST["usr-mail"]."' WHERE id =".$_GET["usr"]);							
+			}
 			header("location:admin.php");
 		}		
-	}
+	}	
+	
+	
+	
 ?>
 
 <html>
@@ -43,8 +63,111 @@
 		<main class="flexr just-evenly center">
 			
 			<article>
-			
-				<form action="" methos="post" id="article-form" class="flexc just-start admin-form">
+			<?php
+				if(isset($_POST["article-crea-submit"]))
+				{
+					$titre = $_POST["titre"];
+					$date = $_POST["article-crea-date-parution"];
+					$categorie = $_POST["article-crea-categorie"];
+					
+					if($date == "aujourdhui")
+					{
+						$date = date("Y-m-d H:i:s", strtotime("+1 hour"));
+					}
+					else
+					{
+						$date = $_POST["article-crea-date-choisir-parution"];
+					}
+					
+					$text = addslashes($_POST["article-crea-text"]);
+					$usr = $_SESSION["id"];
+					
+					
+					if(isset($_GET["article-edit"]))
+					{
+						$stmt->query("UPDATE articles SET article = '".$text."', id_utilisateurs = $usr ,id_categorie = $categorie, date = '$date', titre= '$titre' WHERE id = '".$_GET['article-edit']."'");
+						echo "UPDATE articles SET article = '".$text."' id_utilisateurs = ".$usr." id_categorie = ".$categorie." date = '".$date."' titre= '".$titre."' WHERE id =".$_GET["article-edit"];
+					}
+					else
+					{
+						$stmt->query("INSERT INTO `articles`(`id`, `article`, `id_utilisateurs`, `id_categorie`, `date`, `titre`) 
+									VALUES (NULL, '".$text."', '".$usr."', '".$categorie."', NOW(), '".$titre."')");
+					}
+					header("location:admin.php");
+				}
+				
+				if(isset($_GET["article-edit"]))
+				{
+					$article = $stmt->query("SELECT * , DATE_FORMAT(date,'%Y-%m-%dT%H:%i') 
+					as date_publication FROM articles WHERE id =".$_GET["article-edit"])->fetch(PDO::FETCH_ASSOC); 
+					?>
+							
+					<form action="" method="POST" id="article-form" class="flexc just-start admin-form">
+						<h1>Création/Modification article</h1>
+
+						<div class="flexr just-between">
+							
+							<div class="flexc just-start">
+							
+								<div class="flexr just-between input-zone">
+									<label for="categorie">Catégorie: </label>
+									<select name="article-crea-categorie">
+										<option value="disabled" disabled>Sélectionnez une catégorie</option>
+										
+										<?php foreach($stmt->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC) as $categorie=>$infos) { 
+											
+											if($infos["id"] == $article["id_categorie"]) { ?>
+												<option value="<?= $infos["id"] ?>" selected><?= $infos["nom"] ?></option>
+										<?php }
+											else { ?>
+												<option value="<?= $infos["id"] ?>"><?= $infos["nom"] ?></option>
+										<?php } }?>
+									
+									</select>
+								</div>
+								
+							
+								<div class="flexr just-between input-zone">
+									<label for="titre">Titre: </label>
+									<input type="text" name="titre" placeholder="Titre Article" value="<?= $article["titre"] ?>"/>
+								</div>	
+							
+							</div>
+							
+							<div class="flexc just-start input-zone" id="article-crea-date">
+								<label for="article-crea-date">Date parution: </label>
+								<span class="flexr just-start">
+									<div class="flexc just-center">
+										<label for="article-crea-date-aujourdhui">Aujourd'hui</label>
+										<input type="radio" name="article-crea-date-parution" class="center" value="aujourdhui" id="article-crea-date-aujourdhui"/>
+									</div>
+
+									<div class="flexc just-center">
+										<label for="article-crea-date-choisir">Choisir</label>
+										<input type="radio" name="article-crea-date-parution" class="center" id="article-crea-date-choisir" checked/>
+										<input type="datetime-local" value="<?= $article["date_publication"] ?>" name="article-crea-date-choisir-parution" id="article-crea-date-choisir-parution"/></input>
+									</div>
+								</span>
+							</div>
+						
+						</div>
+
+						<div class="flexc just-start input-zone">
+							<label for="article-crea-text">Description: </label>
+							<textarea name="article-crea-text" rows="13" id="article-crea-text-area"><?= $article["article"] ?></textarea>
+						</div>
+						
+						<div class="flexr just-between input-zone center" id="article-crea-sub">
+							<input type="submit" value="Modifier" name="article-crea-submit" id="article-crea-submit"/>
+							<input type="reset" value="Effacer" id="article-crea-effacer"/>
+						</div>
+					</form>
+					
+					
+			<?php 
+				}
+			else{ 	?>
+				<form action="" method="post" id="article-form" class="flexc just-start admin-form">
 					<h1>Création/Modification article</h1>
 
 					<div class="flexr just-between">
@@ -54,11 +177,10 @@
 							<div class="flexr just-between input-zone">
 								<label for="categorie">Catégorie: </label>
 								<select name="article-crea-categorie">
-									<option value="0" disabled selected>Sélectionnez une catégorie</option>
-									<option value="1">FPS</option>
-									<option value="2">RPG</option>
-									<option value="3">MMORPG</option>
-									<option value="4">Platformer</option>
+									<option value="disabled" disabled selected>Sélectionnez une catégorie</option>
+									<?php foreach($stmt->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC) as $categorie=>$infos) { ?>
+										<option value="<?= $infos["id"] ?>"><?= $infos["nom"] ?></option>
+									<?php } ?>
 								</select>
 							</div>
 							
@@ -98,66 +220,98 @@
 						<input type="reset" value="Effacer" id="article-crea-effacer"/>
 					</div>
 				</form>
-			
+			<?php } ?>
 			</article>
 			
-			<article class="flexc just-start" >
-				<h1 id="admin-utilisateurs-title" class="center">Utilisateurs</h1>
-				<div id="admin-user-zone">
-				<?php foreach($user as $infos) {
-						if(isset($_GET["usr"]) && $_GET["usr"] == $infos["id"]) {?>
-						
-							<form method="post" class="usr-id-edit flexr just-between center">
-								<div class="flexr just-start">
-									<img src="<?= $infos["avatar"]?>" class="admin-usr-image center"/>
-									
-									<div class="flexc just-between usr-name-log-edit">
-									
-										<input type="text" name="usr-login" class="admin-usr-name" value="<?= $infos["login"]?>"/>
+			<article class="flexr just-between" >
+				<div>
+					<h1 id="admin-utilisateurs-title" class="center">Utilisateurs</h1>
+					<div id="admin-user-zone">
+					
+					<?php foreach($user as $infos) {
+							if(isset($_GET["usr"]) && $_GET["usr"] == $infos["id"]) {?>
+							
+								<form method="post" class="usr-id-edit flexr just-between center">
+									<div class="flexr just-start">
+										<img src="<?= $infos["avatar"]?>" class="admin-usr-image center"/>
 										
-										<select name="admin-usr-droit" class="admin-usr-droit">
-											<option value="disabled" selected>Droits</option>
-											<?php foreach(($stmt->query("SELECT * FROM droits")->fetchAll(PDO::FETCH_ASSOC)) as $droits)
-											{ ?>
-												<option class="text-black" value="<?= $droits["id"] ?>"><?= $droits["nom"] ?></option>
-									<?php	} ?>
-										</select>
+										<div class="flexc just-between usr-name-log-edit">
+										
+											<input type="text" name="usr-login"  value="<?= $infos["login"]?>"/>
+											<input type="text" name="usr-mail" class="usr-edit-mail" value="<?= $infos["email"] ?>"/>
+											<select name="admin-usr-droit" class="admin-usr-droit">
+												<option value="disabled" selected>Droits</option>
+												<?php foreach(($stmt->query("SELECT * FROM droits")->fetchAll(PDO::FETCH_ASSOC)) as $droits)
+												{ ?>
+													<option class="text-black" value="<?= $droits["id"] ?>"><?= $droits["nom"] ?></option>
+										<?php	} ?>
+											</select>
+										</div>
 									</div>
+									
+									<span class="flexr just-evenly admin-usr-edit-zone">
+										
+										<input type="submit" value="" name="<?= $infos["id"] ?>"/>
+
+										<a href="admin.php?delete=<?= $infos["id"] ?>">
+											<img src="Images/assets/delete.png" class="admin-usr-delete-img"/>
+										</a>
+									</span>
+								</form>	
+							
+					<?php }
+						else { ?>
+						<span class="usr-id flexr just-between center">
+							<div class="flexr just-start">
+								<img src="<?= $infos["avatar"]?>" class="admin-usr-image center"/>
+								<div class="flexc just-center">
+									<p class="admin-usr-name"><?= $infos["login"] ?></p>
+									<i class="admin-usr-droit"><?= $infos["droit"] ?></i>
+								</div>
+							</div>
+							
+							<span class="flexr just-evenly admin-usr-edit-zone">
+								<a href="admin.php?usr=<?= $infos["id"] ?>">
+									<img src="Images/assets/edit.png" class="admin-usr-edit-img"/>
+								</a>
+
+								<a href="admin.php?delete=<?= $infos["id"] ?>">
+									<img src="Images/assets/delete.png" class="admin-usr-delete-img"/>
+								</a>
+							</span>
+						</span>
+					<?php }
+					}?>
+					</div>
+				</div>
+				<div class="flexc just-start">
+					<h1 id="admin-utilisateurs-title" class="center">Articles</h1>
+					<div id="admin-article-zone" class="wrap">
+						<?php foreach($stmt->query("SELECT *, articles.id as article_id FROM articles INNER JOIN utilisateurs ON id_utilisateurs= utilisateurs.id ORDER BY date DESC")->fetchAll(PDO::FETCH_ASSOC) as $article) { ?>
+							<div class="flexr just-between admin-article-manage">
+								<div class="flexc just-center">
+									<span class="flexr just-start">
+										<p class="article-title"><?= $article["titre"] ?></p>
+										<p class="article-date">- <?= $article["date"] ?></p>
+									</span>
+									<span class="flexr just-between article-infos-zone">
+										<u class="article-createur"><i><?= $article["login"] ?></i></u>
+										<a href="article.php?id=<?= $article["id"] ?>" class="a-null text-black">Voir</a>
+									</span>
 								</div>
 								
-								<span class="flexr just-evenly admin-usr-edit-zone">
+								<div class="flexr just-center admin-usr-edit-zone">
+									<a href="admin.php?article-edit=<?= $article["article_id"] ?>">
+										<img src="Images/assets/edit.png" class="admin-usr-edit-img"/>
+									</a>
 									
-									<input type="submit" value="" name="<?= $infos["id"] ?>"/>
-
-									<a href="admin.php?delete=<?= $infos["id"] ?>">
+									<a href="admin.php?article-delete=<?= $article["article_id"] ?>">
 										<img src="Images/assets/delete.png" class="admin-usr-delete-img"/>
 									</a>
-								</span>
-							</form>	
-						
-				<?php }
-					else { ?>
-					<span class="usr-id flexr just-between center">
-						<div class="flexr just-start">
-							<img src="<?= $infos["avatar"]?>" class="admin-usr-image center"/>
-							<div class="flexc just-center">
-								<p class="admin-usr-name"><?= $infos["login"] ?></p>
-								<i class="admin-usr-droit"><?= $infos["droit"] ?></i>
+								</div>
 							</div>
-						</div>
-						
-						<span class="flexr just-evenly admin-usr-edit-zone">
-							<a href="admin.php?usr=<?= $infos["id"] ?>">
-								<img src="Images/assets/edit.png" class="admin-usr-edit-img"/>
-							</a>
-
-							<a href="admin.php?delete=<?= $infos["id"] ?>">
-								<img src="Images/assets/delete.png" class="admin-usr-delete-img"/>
-							</a>
-						</span>
-					</span>
-				<?php }
-				}?>
+						<?php } ?>
+					</div>
 				</div>
 			</article>
 		</main>		

@@ -7,6 +7,8 @@
         header("location:index.php");
     }
 
+	$_SESSION["id"] = 2;
+
     if(isset($_SESSION["id"]))
     {
         $stmt = new PDO ("mysql:host=localhost;dbname=blog","root","");

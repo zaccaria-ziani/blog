@@ -190,13 +190,13 @@ main
 {
 	display:block;
 	position:absolute;
-	left:53em;
+	left:43em;
 	top:17.5em;
 }
 
 .usr-id
 {
-	width:25em;
+	width:20em;
 	align-self:center;
 	transition:background 0.4s ease;
 	border-radius:15px;
@@ -211,6 +211,7 @@ main
 {
 	transition:background 0.4s ease;
 	border-radius:15px;
+	height:5em;
 }
 
 .admin-usr-edit-zone img
@@ -250,6 +251,11 @@ main
 	border-radius:7px;
 	background-image:url('Images/assets/save.png');
 	background-size:cover;
+}
+
+.usr-edit-mail
+{
+	margin-top:-1em;
 }
 
 #admin-utilisateurs-title
@@ -304,4 +310,71 @@ main
 /* Handle on hover */
 #admin-user-zone::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+#admin-article-zone
+{
+	margin-left:10px;
+}
+
+.article-title
+{
+	font-size:1.4em;
+	height:0.5em;
+	font-weight:bold;
+	margin-top:-0.2em;
+}
+
+.article-infos-zone
+{
+	margin:3px;
+	margin-top:-0.3em;
+}
+
+.admin-article-manage
+{
+	transition:all 0.4s ease;
+	border-radius:15px;
+}
+
+.admin-article-manage:hover
+{
+	background:#e4e4e4;
+}
+
+.admin-article-manage span
+{
+	width:20em;
+}
+
+.admin-article-manage span u
+{
+	color:grey;
+	font-size:0.8em;
+}
+
+.admin-article-manage div span a
+{
+	font-size:1.2em;
+	position:relative;
+	top:-1.5em;
+}
+
+.article-date
+{
+	font-size:0.9em;
+	color:grey;
+	position:relative;
+	top:-0.9em;
+	left:0.2em;
+}
+
+.admin-article-manage>span
+{
+	margin:0px;
+}
+
+.article-createur
+{
+	margin-top:-1em;
 }
