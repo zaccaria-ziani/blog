@@ -5,6 +5,9 @@ body{
 
 header{
     background: #dddddd;
+    box-shadow:0px 10px 7px 2px grey;
+    max-height:2.6em;
+
 }
 
 header nav
@@ -76,6 +79,16 @@ footer nav
 footer nav a:hover
 {
 	text-decoration:underline;
+}
+
+footer nav a
+{
+	transition:color 0.3s ease;
+}
+
+footer nav a:hover
+{
+	
 }
 
 footer nav div
