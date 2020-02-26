@@ -7,12 +7,11 @@
         header("location:index.php");
     }
 
-	$_SESSION["id"] = 2;
-
     if(isset($_SESSION["id"]))
     {
         $stmt = new PDO ("mysql:host=localhost;dbname=blog","root","");
-        $droit = $stmt->query("SELECT nom FROM droits  WHERE droits.id = ".$_SESSION["id"])->fetch()[0];
+		$droit_id = $stmt->query("SELECT id_droits FROM utilisateurs WHERE id = ".$_SESSION["id"])->fetch()[0];
+        $droit = $stmt->query("SELECT nom FROM droits  WHERE droits.id = ".$droit_id)->fetch()[0];
     }
     else{
         $droit = "";
@@ -33,16 +32,17 @@
     { ?>
         <a href="connexion.php" class="a-null">Connexion</a>
         <a href="inscription.php" class="a-null">Inscription</a>
-        <?php }
+<?php }
 
     if($droit == "moderateur")
     { ?>
         <a href="creer-article" class="a-null">Creation Articles</a>
         
-<?php    }
-        if($droit == "administrateur")
-        { ?>
-            <a href="admin.php" class="a-null text-black">Admin</a>
+<?php }
+
+	if($droit == "administrateur")
+	{ ?>
+		<a href="admin.php" class="a-null text-black">Admin</a>
 <?php   }
     ?>
 

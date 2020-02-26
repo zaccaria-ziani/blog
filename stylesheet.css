@@ -384,3 +384,21 @@ main
 {
 	margin-top:-1em;
 }
+
+#conn-div
+{
+	height:90vh;
+	width:25em;
+}
+
+#conn-div .input-zone
+{
+	margin:1em;
+}
+
+#conn-div-submit
+{
+	align-self:center;
+	width:10em;
+	margin:auto;
+}
