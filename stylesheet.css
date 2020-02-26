@@ -61,6 +61,12 @@ header nav a:hover
     background:lightgrey;
 }
 
+#header-profil-image img
+{
+	height:1.5em;
+	margin-top:-0.1em;
+}
+
 /*-------------------------------------------FOOTER----------------------------------------*/
 footer
 {

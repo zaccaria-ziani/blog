@@ -61,5 +61,5 @@
     
 
 
-    <a href="profil.php" id="header-profil-image"><img src="Images/avatars/<?php //$avatar?>"/></a>
+    <a href="profil.php" id="header-profil-image"><img src="Images/assets/logo.png"/></a>
 </nav>
