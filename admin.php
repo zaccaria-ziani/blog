@@ -43,7 +43,11 @@
 		}		
 	}	
 	
-	
+	if(isset($_GET["article-delete"]))
+	{
+		$stmt->query("DELETE FROM articles WHERE articles.id = ".$_GET["article-delete"]);
+		header("location:admin.php");
+	}
 	
 ?>
 
@@ -66,7 +70,7 @@
 			<?php
 				if(isset($_POST["article-crea-submit"]))
 				{
-					$titre = $_POST["titre"];
+					$titre = addslashes($_POST["titre"]);
 					$date = $_POST["article-crea-date-parution"];
 					$categorie = $_POST["article-crea-categorie"];
 					
@@ -79,14 +83,12 @@
 						$date = $_POST["article-crea-date-choisir-parution"];
 					}
 					
-					$text = addslashes($_POST["article-crea-text"]);
+					$text = htmlspecialchars(addslashes($_POST["article-crea-text"]));
 					$usr = $_SESSION["id"];
-					
 					
 					if(isset($_GET["article-edit"]))
 					{
 						$stmt->query("UPDATE articles SET article = '".$text."', id_utilisateurs = $usr ,id_categorie = $categorie, date = '$date', titre= '$titre' WHERE id = '".$_GET['article-edit']."'");
-						echo "UPDATE articles SET article = '".$text."' id_utilisateurs = ".$usr." id_categorie = ".$categorie." date = '".$date."' titre= '".$titre."' WHERE id =".$_GET["article-edit"];
 					}
 					else
 					{
