@@ -47,8 +47,11 @@ include 'header.php';
     echo '</div>';
 
     //nb de pages d'articles a afficher
-    $quelcategorie = $_GET['categorie'];
-    var_dump($quelcategorie);
+    if (isset($_GET['categorie']))
+    {
+        $quelcategorie = $_GET['categorie'];
+        var_dump($quelcategorie);
+    }
     while ($ii<$nbpages)
     {
         echo '<a href="article.php?start='.$ii.'"> '.$ii.'</a>';
