@@ -1,5 +1,4 @@
 <?php
-
 	$stmt = new PDO("mysql:host=localhost;dbname=blog","root","");
 	
 	
@@ -15,12 +14,12 @@
 			if(empty($stmt->query("SELECT * FROM utilisateurs WHERE login = '".$_POST["login"]."'")->fetch()))
 			{
 				$type = pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION);
-				if($type != "jpg" && $type != "gif" && $type != "png" && $type != "bmp" && $type != "jpeg")
+				if($type == "jpg" || $type == "gif" || $type == "png" || $type == "bmp" || $type == "jpeg")
 				{
 					$size = $_FILES["avatar"]["size"];
 					if ($size < 50000)
 					{
-						$new_name = $stmt->query("SELECT id FROM utilisateurs WHERE login = '".$_POST["login"]."'")->fetch()[0].".".$type;
+						$new_name = ($stmt->query("SELECT id FROM utilisateurs ORDER BY id DESC")->fetch()[0]+1).".".$type;
 						foreach(scandir("Images/avatars/") as $file)
 						{
 							if($new_name[0] == $file[0])

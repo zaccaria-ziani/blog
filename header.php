@@ -10,8 +10,9 @@
     if(isset($_SESSION["id"]))
     {
         $stmt = new PDO ("mysql:host=localhost;dbname=blog","root","");
-		$droit_id = $stmt->query("SELECT id_droits FROM utilisateurs WHERE id = ".$_SESSION["id"])->fetch()[0];
-        $droit = $stmt->query("SELECT nom FROM droits  WHERE droits.id = ".$droit_id)->fetch()[0];
+		$droit = $stmt->query("SELECT droits.nom FROM utilisateurs
+		INNER JOIN droits ON utilisateurs.id_droits = droits.id
+		WHERE utilisateurs.id = ".$_SESSION["id"])->fetch()[0];
     }
     else{
         $droit = "";
