@@ -1,7 +1,6 @@
 <?php
     session_start();
-
-	$_SESSION["id"] = "1337";
+	$stmt = new PDO ("mysql:host=localhost;dbname=blog","root","");
 	
     if(isset($_GET["deco"]))
     {
@@ -11,7 +10,6 @@
 
     if(isset($_SESSION["id"]))
     {
-        $stmt = new PDO ("mysql:host=localhost;dbname=blog","root","");
 		$droit = $stmt->query("SELECT droits.nom FROM utilisateurs
 		INNER JOIN droits ON utilisateurs.id_droits = droits.id
 		WHERE utilisateurs.id = ".$_SESSION["id"])->fetch()[0];
@@ -50,13 +48,12 @@
     ?>
 
 	<div id="header-article" class="flexc just-center">
-		<a href="articles.php" class="a-null">Articles &darr;</a>
 
+		<a href="articles.php" class="a-null">Articles &darr;</a>
 		<div id="article-list" class="flexc just-start">
-			<a href="articles.php?categorie=1" class="a-null ">FPS</a>
-			<a href="articles.php?categorie=2" class="a-null ">RPG</a>
-			<a href="articles.php?categorie=3" class="a-null ">Meuporg</a>
-			<a href="articles.php?categorie=4" class="a-null ">Plateformers</a>
+			<?php foreach ($stmt->query("SELECT * FROM categories")->fetchAll() as $categorie) { ?>
+			<a href="articles.php?categorie= <?= $categorie[0] ?>" class="a-null "><?= $categorie[1] ?> </a>
+			<?php } ?>
 		</div>
 	</div>
 

@@ -31,22 +31,22 @@ header nav a:hover
 
 #header-article
 {
-	position:relative;
-	top:44px;
+    display:flex;
+	position:absolute;
+	left:90vw;
 }
 
 #header-article:hover>div
 {
-    display:flex;
-    transform:translateY(0px);
+    opacity:1
 }
 
 #article-list
 {
     text-align: center;
     background:#dddddd;
-    transform:translateY(-150px);
-    transition:transform 0.4s ease;
+	opacity:0;
+    transition:opacity 0.4s ease;
 }
 
 #article-list:hover{
@@ -78,10 +78,16 @@ footer
 footer nav
 {
 	width:80%;
-	height:10em;
 	margin:auto;
+	
 }
 
+
+footer nav div
+{
+	flex-wrap:wrap;
+	width:15em;
+}
 footer nav a:hover
 {
 	text-decoration:underline;
@@ -104,8 +110,13 @@ footer nav div
 
 footer nav h1
 {
-	margin-bottom:0px;
+	margin:0px;
 	text-decoration:underline;
+}
+
+footer #crea-article
+{
+	
 }
 /*-------------------------------------------MAIN----------------------------------------*/
 
@@ -158,10 +169,22 @@ main
 
 
 
-#article-crea-sub input
+#article-crea-sub>input
 {
 	cursor:pointer;
 	width:45%;
+	font-size:1.2em;
+	color:white;
+	background-color:#47c53f;
+	border:3px solid #ffffff;
+	padding:0.3em;
+	transition:all 0.3s ease;
+}
+
+#article-crea-sub a input
+{
+	cursor:pointer;
+	width:7em;
 	font-size:1.2em;
 	color:white;
 	background-color:#47c53f;
@@ -176,7 +199,7 @@ main
 	border-color:#96f591;
 }
 
-#article-crea-effacer:hover
+#article-crea-effacer input:hover
 {
 	background:#e61f1f;
 	border:3px solid #f79292;
@@ -334,6 +357,30 @@ main
 #admin-article-zone
 {
 	margin-left:10px;
+	overflow-Y:scroll;
+	overflow-X:hidden;
+	max-height:30em;
+}
+
+/* width */
+#admin-article-zone::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+#admin-article-zone::-webkit-scrollbar-track {
+  background: #e4e4e4;
+  border-radius:5px;
+}
+
+/* Handle */
+#admin-article-zone::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+#admin-article-zone::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .article-title
@@ -414,4 +461,32 @@ main
 	align-self:center;
 	width:10em;
 	margin:auto;
+}
+
+.categorie-form
+{
+	width:25em;
+	margin:2em;
+}
+
+.categorie-form *
+{
+
+}
+
+.categorie-btn
+{
+	background:#47C53F; 
+	text-align:center;
+	padding:0.1em;
+	color:white;
+	transition:background 0.3s ease;
+	max-height:1.8em;
+	align-self:center;
+	max-width:8em;
+}
+
+#categorie-change:hover, #categorie-delete:hover, .categorie-ajouter:hover
+{
+	background:#328E2C;
 }

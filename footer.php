@@ -7,24 +7,26 @@
 		<a href="index.php?deco=true" class="a-null text-black center">Deconnecter</a>
 	</div>
 
-	<div class="flexc ">
+	<div class="flexc" id="crea-article">
 		<h1 class="center">Article</h1>
+		<div class="flexc">
 
-		<a href="articles.php?categorie=1" class="a-null text-black center">Plateformer</a> 
-		<a href="articles.php?categorie=2" class="a-null text-black center">FPS</a> 
-		<a href="articles.php?categorie=3" class="a-null text-black center">RPG</a> 
-		<a href="articles.php?categorie=4" class="a-null text-black center">Meuporg</a>
+			
+	<?php foreach ($stmt->query("SELECT * FROM categories")->fetchAll() as $categorie) { ?>
+			<a href="articles.php?categorie= <?= $categorie[0] ?>" class="a-null text-black center"><?= $categorie[1] ?> </a>
+			<?php } ?>
+		</div>
 	</div>
 	
 	<?php if($droit == "moderateur"){ ?>
-		<div class="flexc ">
 			<h1 class="center">Creation article</h1>
-			<a href="creation-article.php" class="a-null text-black center">Creation article</a>
-		</div>
+			<div class="flexc ">
+				<a href="creation-article.php" class="a-null text-black center">Creation article</a>
+			</div>
 	<?php }
 		if($droit == "administrateur") { ?>
 			<div class="flexc">
-				<h1 class="center">Admin zone</h1>
+			<h1 class="center">Admin zone</h1>
 				<a href="admin.php" class="a-null text-black center">Admin</a>
 				<a href="creation-article.php" class="a-null text-black center">Creation article</a>
 			</div>

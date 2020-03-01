@@ -68,11 +68,49 @@
 			
 			<article>
 			<?php
+				if(isset($_POST["categorie-change"]))
+				{
+					$redirect = "location:admin.php?categorie-change=".$_POST["categorie"];
+					header($redirect);
+				}
+				if(isset($_POST["save-change"]))
+				{
+					$newName = $_POST["change-categorie"];
+					$oldName = $stmt->query("SELECT nom FROM categories WHERE id =".$_GET["categorie-change"])->fetch()[0];
+					if($newName != $oldName)
+					{
+						$stmt->query('UPDATE categories SET nom = "'.$newName.'" WHERE id = '.$_GET["categorie-change"]);
+						// $stmt->query('INSERT INTO categories(id,nom) VALUES(NULL, "'.$newName.'" )');
+						header("location:admin.php");
+					}
+					else
+					{
+						// Put error here
+					}
+				}
+				
+				if(isset($_POST["categorie-ajouter"]))
+				{
+					$newName = $_POST["add-categorie"];
+					$oldName = $stmt->query("SELECT * FROM categories WHERE nom = '".$_POST["add-categorie"]."'")->fetchAll();
+					if(empty($oldName))
+					{
+						$stmt->query('INSERT INTO categories(id,nom) VALUES(NULL, "'.$newName.'" )');
+						header("location:admin.php");
+					}
+					else
+					{
+						// Put error here
+					}
+				}
+				
+				
 				if(isset($_POST["article-crea-submit"]))
 				{
-					$titre = addslashes($_POST["titre"]);
+					$titre = $_POST["titre"];
 					$date = $_POST["article-crea-date-parution"];
 					$categorie = $_POST["article-crea-categorie"];
+					
 					
 					if($date == "aujourdhui")
 					{
@@ -83,7 +121,8 @@
 						$date = $_POST["article-crea-date-choisir-parution"];
 					}
 					
-					$text = htmlspecialchars(addslashes($_POST["article-crea-text"]));
+					$text = htmlspecialchars($_POST["article-crea-text"]);
+					
 					$usr = $_SESSION["id"];
 					
 					if(isset($_GET["article-edit"]))
@@ -92,8 +131,8 @@
 					}
 					else
 					{
-						$stmt->query("INSERT INTO `articles`(`id`, `article`, `id_utilisateurs`, `id_categorie`, `date`, `titre`) 
-									VALUES (NULL, '".$text."', '".$usr."', '".$categorie."', NOW(), '".$titre."')");
+						$stmt->query('INSERT INTO `articles`(`id`, `article`, `id_utilisateurs`, `id_categorie`, `date`, `titre`) 
+									VALUES (NULL, "'.$text.'", "'.$usr.'", "'.$categorie.'", "'.$date.'", "'.$titre.'")');
 					}
 					header("location:admin.php");
 				}
@@ -141,7 +180,7 @@
 								<span class="flexr just-start">
 									<div class="flexc just-center">
 										<label for="article-crea-date-aujourdhui">Aujourd'hui</label>
-										<input type="radio" name="article-crea-date-parution" class="center" value="aujourdhui" id="article-crea-date-aujourdhui"/>
+										<input type="radio" name="article-crea-date-parution" class="center" value="aujourdhui" id="article-crea-date-aujourdhui" required/>
 									</div>
 
 									<div class="flexc just-center">
@@ -156,12 +195,12 @@
 
 						<div class="flexc just-start input-zone">
 							<label for="article-crea-text">Description: </label>
-							<textarea name="article-crea-text" rows="13" id="article-crea-text-area"><?= $article["article"] ?></textarea>
+							<textarea name="article-crea-text" rows="13" id="article-crea-text-area" required><?= $article["article"] ?></textarea>
 						</div>
 						
 						<div class="flexr just-between input-zone center" id="article-crea-sub">
 							<input type="submit" value="Modifier" name="article-crea-submit" id="article-crea-submit"/>
-							<input type="reset" value="Effacer" id="article-crea-effacer"/>
+							<a href="admin.php" id="article-crea-effacer"> <input type="Button" value="Retour" /></a>
 						</div>
 					</form>
 					
@@ -218,11 +257,58 @@
 					</div>
 					
 					<div class="flexr just-between input-zone center" id="article-crea-sub">
-						<input type="submit" value="Preview" name="article-crea-submit" id="article-crea-submit"/>
-						<input type="reset" value="Effacer" id="article-crea-effacer"/>
+						<input type="submit" value="Sauvegarder" name="article-crea-submit" id="article-crea-submit"/>
+						<input type="Reset" value="Effacer" id="article-crea-effacer"/>
 					</div>
 				</form>
 			<?php } ?>
+			
+				<form action="" method="post" class="flexc just-center categorie-form" >
+					<h1>Catégorie maker</h1>
+					<div class="flexr just-between input-zone">
+						<label for="newCategorie">Nouvelle categorie</label>
+					<?php if(isset($_GET["categorie-change"]))
+						{ ?>
+							<input name="change-categorie" type="text" value = "<?= $stmt->query("SELECT nom FROM `categories` WHERE id =".$_GET["categorie-change"])->fetch()[0] ?>"/>
+							<input type="submit" name="save-change" value="Modifier" class="categorie-btn"/>
+							
+					<?php } 
+						else
+						{ ?>
+							<input name="add-categorie" type="text"/>
+							<input type="submit" name="categorie-ajouter" class="categorie-btn" value="Ajouter"/>
+							
+					<?php } ?>
+					</div>
+				</form>
+				
+				<form action="" method="post" class="flexc just-center categorie-form">
+					<div class="flexr just-between">
+						<label for="categorie">Categorie:</label>
+						
+						<select name="categorie">
+							<option selected disabled>Choisir categorie</option>
+							<?php foreach(($stmt->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC)) as $categorie)
+									{ 
+										if(isset($_GET["categorie-change"]))
+										{ ?>
+											<option class="text-black" value="<?php echo $select = ($_GET["categorie-change"] == $categorie["id"]) ? "selected" : ""; ?>" >
+								<?php 	}
+										else
+										{ ?>
+											<option class="text-black" value="<?= $categorie["id"] ?>">
+												<?= $categorie["nom"] ?>
+											</option>
+											
+								<?php 	}
+									} ?>
+						</select>
+						<input type="submit" name="categorie-change" class="categorie-btn" value="Changer"/>
+						<button value="Supprimer" class="categorie-btn" name="categorie-delete"/>Supprimer</b>
+					</div>
+				</form>
+			
+			
 			</article>
 			
 			<article class="flexr just-between" >
@@ -316,6 +402,8 @@
 					</div>
 				</div>
 			</article>
+		
+		
 		</main>		
 		
 		<footer>
