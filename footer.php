@@ -9,6 +9,7 @@
 
 	<div class="flexc ">
 		<h1 class="center">Article</h1>
+
 		<a href="articles.php?categorie=1" class="a-null text-black center">Plateformer</a> 
 		<a href="articles.php?categorie=2" class="a-null text-black center">FPS</a> 
 		<a href="articles.php?categorie=3" class="a-null text-black center">RPG</a> 

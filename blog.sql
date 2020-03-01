@@ -1,11 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 4.8.5
+﻿-- phpMyAdmin SQL Dump
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le :  Dim 23 fév. 2020 à 23:53
--- Version du serveur :  5.7.26
--- Version de PHP :  7.2.18
+-- Host: 127.0.0.1:3306
+-- Generation Time: Feb 25, 2020 at 12:20 AM
+-- Server version: 10.4.10-MariaDB
+-- PHP Version: 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `blog`
+-- Database: `blog`
 --
 CREATE DATABASE IF NOT EXISTS `blog` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `blog`;
@@ -27,7 +27,7 @@ USE `blog`;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `articles`
+-- Table structure for table `articles`
 --
 
 DROP TABLE IF EXISTS `articles`;
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `articles` (
   `article` text NOT NULL,
   `id_utilisateurs` int(11) NOT NULL,
   `id_categorie` int(11) NOT NULL,
-  `date` timestamp NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
@@ -50,10 +50,14 @@ INSERT INTO `articles` (`id`, `article`, `id_utilisateurs`, `id_categorie`, `dat
 (3, 'Je suis belle, ô mortels! comme un rêve de pierre,\r\nEt mon sein, où chacun s\'est meurtri tour à tour,\r\nEst fait pour inspirer au poète un amour\r\nEternel et muet ainsi que la matière.\r\n\r\nJe trône dans l\'azur comme un sphinx incompris;\r\nJ\'unis un cœur de neige à la blancheur des cygnes;\r\nJe hais le mouvement qui déplace les lignes,\r\nEt jamais je ne pleure et jamais je ne ris.\r\n\r\nLes poètes, devant mes grandes attitudes,\r\nQue j\'ai l\'air d\'emprunter aux plus fiers monuments,\r\nConsumeront leurs jours en d\'austères études;\r\nCar j\'ai, pour fasciner ces dociles amants,\r\nDe purs miroirs qui font toutes choses plus belles:\r\nMes yeux, mes larges yeux aux clartés éternelles!', 3, 3, '2020-02-19 07:12:12'),
 (4, 'O toison, moutonnant jusque sur l\'encolure!\r\nO boucles! O parfum chargé de nonchaloir!\r\nExtase! Pour peupler ce soir l\'alcôve obscure\r\nDes souvenirs dormant dans cette chevelure,\r\nJe la veux agiter dans l\'air comme un mouchoir!\r\n\r\nLa langoureuse Asie et la brûlante Afrique,\r\nTout un monde lointain, absent, presque défunt,\r\nVit dans les profondeurs, forêt aromatique!\r\nComme d\'autres esprits voguent sur la musique,\r\nLe mien, ô mon amour! nage sur ton parfum.\r\nJ\'irai là-bas où l\'arbre et l\'homme, pleins de sève,\r\nSe pâment longuement sous l\'ardeur des climats;\r\nFortes tresses, soyez la houle qui m\'enlève!\r\nTu contiens, mer d\'ébène, un éblouissant rêve\r\nDe voiles, de rameurs, de flammes et de mâts:\r\n\r\nUn port retentissant où mon âme peut boire\r\nA grands flots le parfum, le son et la couleur;\r\nOù les vaisseaux, glissant dans l\'or et dans la moire,\r\nOuvrent leurs vastes bras pour embrasser la gloire\r\nD\'un ciel pur où frémit l\'éternelle chaleur.\r\n\r\nJe plongerai ma tête amoureuse d\'ivresse\r\nDans ce noir océan où l\'autre est enfermé;\r\nEt mon esprit subtil que le roulis caresse\r\nSaura vous retrouver, ô féconde paresse!\r\nInfinis bercements du loisir embaumé!\r\n\r\nCheveux bleus, pavillon de ténèbres tendues,\r\nVous me rendez l\'azur du ciel immense et rond;\r\nSur les bords duvetés de vos mèches tordues\r\nJe m\'enivre ardemment des senteurs confondues\r\nDe l\'huile de coco, du musc et du goudron.\r\n\r\nLongtemps! toujours! ma main dans ta crinière lourde\r\nSèmera le rubis, la perle et le saphir,\r\nAfin qu\'à mon désir tu ne sois jamais sourde!\r\nN\'es-tu pas l\'oasis où je rêve, et la gourde\r\nOù je hume à longs traits le vin du souvenir?', 2, 4, '2020-02-19 12:00:24');
 
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `categories`
+-- Table structure for table `categories`
 --
 
 DROP TABLE IF EXISTS `categories`;
@@ -76,7 +80,7 @@ INSERT INTO `categories` (`id`, `nom`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commentaires`
+-- Table structure for table `commentaires`
 --
 
 DROP TABLE IF EXISTS `commentaires`;
@@ -85,14 +89,14 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
   `commentaire` varchar(1024) NOT NULL,
   `id_article` int(11) NOT NULL,
   `id_utilisateur` int(11) NOT NULL,
-  `date` timestamp NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `droits`
+-- Table structure for table `droits`
 --
 
 DROP TABLE IF EXISTS `droits`;
@@ -103,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `droits` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `droits`
+-- Dumping data for table `droits`
 --
 
 INSERT INTO `droits` (`id`, `nom`) VALUES
@@ -114,7 +118,7 @@ INSERT INTO `droits` (`id`, `nom`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `utilisateurs`
+-- Table structure for table `utilisateurs`
 --
 
 DROP TABLE IF EXISTS `utilisateurs`;
