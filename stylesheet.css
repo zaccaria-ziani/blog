@@ -541,6 +541,11 @@ main
 	margin-bottom:-2em;
 }
 
+.articlebox-content h3
+{
+	margin-right:0.2em;
+}
+
 .articlebox-content a
 {
 	margin:auto;
@@ -556,4 +561,13 @@ main
 {
 	margin:0.2em;
 	font-size:1.3em;
+}
+
+#categorie-index
+{
+	font-size:2em;
+	background:#eff591;
+	border:2px solid #b9b9b9;
+	padding:1em;
+	border-radius:5%;
 }

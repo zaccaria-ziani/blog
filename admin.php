@@ -382,7 +382,8 @@
 				<div class="flexc just-start">
 					<h1 id="admin-utilisateurs-title" class="center">Articles</h1>
 					<div id="admin-article-zone" class="wrap">
-						<?php foreach($stmt->query("SELECT *, articles.id as article_id FROM articles INNER JOIN utilisateurs ON id_utilisateurs= utilisateurs.id ORDER BY date DESC")->fetchAll(PDO::FETCH_ASSOC) as $article) {  ?>
+						<?php foreach($stmt->query("SELECT *, articles.id as article_id FROM articles INNER JOIN utilisateurs
+									ON id_utilisateurs= utilisateurs.id ORDER BY date DESC")->fetchAll(PDO::FETCH_ASSOC) as $article) {  ?>
 							<div class="flexr just-between admin-article-manage">
 								<div class="flexc just-center">
 									<span class="flexr just-start">
