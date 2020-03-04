@@ -16,7 +16,14 @@
 	<main class="flex just-center">
 	<?php
 		$conn = mysqli_connect("localhost","root","","blog");
-		$request = "SELECT COUNT(id) FROM articles";
+		if(!isset($_GET["categorie"]))
+		{
+			$request = "SELECT COUNT(id) FROM articles";			
+		}
+		else
+		{
+			$request = "SELECT COUNT(id) FROM articles WHERE id_categorie=".$_GET["categorie"];						
+		}
 		$sql = mysqli_query($conn,$request);
 		$row = mysqli_fetch_all($sql);
 		
@@ -46,10 +53,11 @@
 
 		//nb de pages d'articles a afficher
 		
+		
 		echo '<div class="flexr just-center center" id="pagination">';
 		while ($ii<$nbpages)
 		{
-			if($ii == $_GET["start"])
+			if($ii ==  ($_GET["start"] ?? 0))
 			{
 				echo "<p>".$ii."</p>";
 			}
@@ -66,7 +74,8 @@
 			$offset = $offset+5*$numeropage;  
 		}
 		$ii = 0;
-		echo '</div>';
+		echo '</div>';			
+		
 		//affichage des articles
 		
 		echo '<div class="articlebox" id="article-main">';
@@ -84,7 +93,7 @@
 				echo '<h3>'.$articles[$i][5].'</h3><i class="center">- Le '.$articles[$i][4].'</i></span>';
 				echo '<p class="center"><u>Par '.$articles[$i][12].'</u></p>';
 				echo '<p>'.$articles[$i][1].'</p>';
-				echo '<a href="article.php?id="'.$articles[$i][0].'" >Voir l\'article</a>';
+				echo '<a href="article.php?id='.$articles[$i][0].'" >Voir l\'article</a>';
 				echo '</div>';
 				$i=$i+1;
 			}
@@ -93,7 +102,6 @@
 		{
 			$request = "SELECT *, utilisateurs.login FROM articles INNER JOIN utilisateurs ON articles.id_utilisateurs = utilisateurs.id WHERE date < NOW() ORDER BY date DESC LIMIT ".$limit." OFFSET ".$offset;
 			$articles = mysqli_fetch_all(mysqli_query($conn, $request));
-			
 			$a1 = count($articles);
 			
 			while ($i<$a1)
@@ -104,17 +112,17 @@
 				echo '<p class="center"><u>Par '.$articles[$i][12].'</u></p>';
 				
 				echo "<p>".$articles[$i][1]."</p>";
-				echo '<a href="article.php?id="'.$articles[$i][0].'" >Voir l\'article</a>';
+				echo '<a href="article.php?id='.$articles[$i][0].'" >Voir l\'article</a>';
 				echo '</div>';
 				$i=$i+1;
 			}
 		}
 		echo "</div>";
-		
+	
 		echo '<div class="flexr just-center center" id="pagination">';
 		while ($ii<$nbpages)
 		{
-			if($ii == $_GET["start"])
+			if($ii == ($_GET["start"] ?? 0))
 			{
 				echo "<p>".$ii."</p>";
 			}
@@ -131,6 +139,7 @@
 			$offset = $offset+5*$numeropage;  
 		}
 		echo '</div>';
+	
 	?>
 	</main>
 	
