@@ -56,9 +56,4 @@
 			<?php } ?>
 		</div>
 	</div>
-
-    
-
-
-    <a href="profil.php" id="header-profil-image"><img src="Images/assets/logo.png"/></a>
 </nav>

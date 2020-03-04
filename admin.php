@@ -68,6 +68,11 @@
 			
 			<article>
 			<?php
+				if (isset($_POST["categorie-delete"]))
+				{
+					$stmt->query("DELETE FROM categories WHERE id =".$_POST["categorie"]);
+					header("location:admin.php");
+				}
 				if(isset($_POST["categorie-change"]))
 				{
 					$redirect = "location:admin.php?categorie-change=".$_POST["categorie"];
@@ -266,7 +271,7 @@
 				<form action="" method="post" class="flexc just-center categorie-form" >
 					<h1>Catégorie maker</h1>
 					<div class="flexr just-between input-zone">
-						<label for="newCategorie">Nouvelle categorie</label>
+						<label for="newCategorie" class="center">Nouvelle categorie</label>
 					<?php if(isset($_GET["categorie-change"]))
 						{ ?>
 							<input name="change-categorie" type="text" value = "<?= $stmt->query("SELECT nom FROM `categories` WHERE id =".$_GET["categorie-change"])->fetch()[0] ?>"/>
@@ -284,7 +289,7 @@
 				
 				<form action="" method="post" class="flexc just-center categorie-form">
 					<div class="flexr just-between">
-						<label for="categorie">Categorie:</label>
+						<label for="categorie" class="center">Categorie:</label>
 						
 						<select name="categorie">
 							<option selected disabled>Choisir categorie</option>
@@ -292,7 +297,9 @@
 									{ 
 										if(isset($_GET["categorie-change"]))
 										{ ?>
-											<option class="text-black" value="<?php echo $select = ($_GET["categorie-change"] == $categorie["id"]) ? "selected" : ""; ?>" >
+											<option class="text-black" value="<?= $categorie["id"] ?>" <?php echo $select = ($_GET["categorie-change"] == $categorie["id"]) ? "selected" : ""; ?>>
+												<?= $categorie["nom"] ?>
+											</option>
 								<?php 	}
 										else
 										{ ?>

@@ -1,16 +1,16 @@
 <?php
     if(isset($_FILES['avatar']) AND !empty($_FILES['avatar']['name'])) {
         $tailleMax = 2097152;
-        $extensionsValides = array('jpg', 'jpeg', 'gif', 'png');
+        $extensionsValides = array('jpg', 'jpeg', 'gif', 'png', 'bmp');
         if($_FILES['avatar']['size'] <= $tailleMax) {
            $extensionUpload = strtolower(substr(strrchr($_FILES['avatar']['name'], '.'), 1));
            if(in_array($extensionUpload, $extensionsValides)) {
-              $chemin = "utilisateurs/avatars/".$_SESSION['login'].".".$extensionUpload;
+              $chemin = "Images/avatars/".$_SESSION['id'].".".$extensionUpload;
               $resultat = move_uploaded_file($_FILES['avatar']['tmp_name'], $chemin);
               if($resultat) {
                  $updateavatar = $bdd->prepare('UPDATE utilisateurs SET avatar = :avatar WHERE id = :id');
-                 $updateavatar->execute(array('avatar' => $_SESSION['login'].".".$extensionUpload,'id' => $_SESSION['login']));
-                 header('Location: profil.php?id='.$_SESSION['login']);
+                 $updateavatar->execute(array('avatar' => $_SESSION['id'].".".$extensionUpload,'id' => $_SESSION['id']));
+                 header('Location: profil.php?id='.$_SESSION['id']);
               } else {
                  $msg = "Erreur durant l'importation de votre photo de profil";
               }

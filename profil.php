@@ -1,12 +1,12 @@
 <?php
 
-session_start();
-if (isset($_SESSION['login']))
+	session_start();
+	if (isset($_SESSION['id']))
     {
         $conn = mysqli_connect("localhost","root","","blog");
-        $request = 'SELECT * FROM utilisateurs WHERE login = "'.$_SESSION["login"].'"';
+        $request = 'SELECT * FROM utilisateurs WHERE id = "'.$_SESSION["id"].'"';
         $sql = mysqli_query($conn,$request);
-        $row = mysqli_fetch_all($sql);
+        $row = mysqli_fetch_assoc($sql);
 
         echo "votre login";
         echo '"'.$row["login"].'"</br>';
@@ -15,23 +15,26 @@ if (isset($_SESSION['login']))
         echo "votre email";
         echo '"'.$row["email"].'"</br>';  
         echo "votre photo de profil </br>";
-        include 'fonctionavatar.php';
-?>
-<form  action="profil.php" method="post">
-    <label> Login :  </label>
-    <input type="text" name="login" value = 
-    <?php echo $row['login']; ?> />
-    <label> Password :  </label></br>
-    <input type="password" name="mdp" value = 
-    <?php echo $row['password']; ?> />
-    <label> Email :  </label>
-    <input type="text" name="email" value = 
-    <?php echo $row['email']; ?> />
-    <input type="submit" name="envoie" value="Modifier" />
-</form>
+        include 'fonctionavatar.php'; 
 
-<?php
-        if (isset($_POST['modifier']))
+		?>
+			
+			<form  action="profil.php" method="post">
+				<label> Login :  </label>
+				<input type="text" name="login" value ="<?php echo $row['login']; ?>" />
+		
+				<label> Password :  </label></br>
+				<input type="password" name="mdp" value = " <?php echo $row['password']; ?> "/>
+
+				<label> Email :  </label>
+				<input type="text" name="email" value = " <?php echo $row['email']; ?> "/>
+				
+				<input type="submit" name="envoie" value="Modifier" />
+			</form>
+
+	<?php
+        
+		if (isset($_POST['modifier']))
         {
             $mdp = password_hash($_POST['mdp'],PASSWORD_BCRYPT,array('cost'=> 12));
             //cryptage mdp//
@@ -41,7 +44,7 @@ if (isset($_SESSION['login']))
         }
 
     }
-else 
+	else 
     {
 
         echo "Vous n'etes pas connecté veuillez vous connecté pour accédé a votre profil";
