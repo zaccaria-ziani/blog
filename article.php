@@ -1,11 +1,3 @@
-<?php
-
-
-
-
-
-?>
-
 
 <!doctype html>
 <html lang="fr">

@@ -82,7 +82,7 @@
 		
 		if(isset($_GET["categorie"]))
 		{
-			$request = "SELECT *, utilisateurs.login FROM articles INNER JOIN utilisateurs ON articles.id_utilisateurs = utilisateurs.id WHERE id_categorie = ".$_GET["categorie"]." AND date < NOW()  ORDER BY date DESC LIMIT ".$limit." OFFSET ".$offset;
+			$request = "SELECT *, utilisateurs.login FROM articles INNER JOIN utilisateurs ON articles.id_utilisateur = utilisateurs.id WHERE id_categorie = ".$_GET["categorie"]." AND date < NOW()  ORDER BY date DESC LIMIT ".$limit." OFFSET ".$offset;
 			$articles = mysqli_fetch_all(mysqli_query($conn, $request));
 			$a1 = count($articles);
 			
@@ -100,7 +100,7 @@
 		}
 		else
 		{
-			$request = "SELECT *, utilisateurs.login FROM articles INNER JOIN utilisateurs ON articles.id_utilisateurs = utilisateurs.id WHERE date < NOW() ORDER BY date DESC LIMIT ".$limit." OFFSET ".$offset;
+			$request = "SELECT *, utilisateurs.login FROM articles INNER JOIN utilisateurs ON articles.id_utilisateur = utilisateurs.id WHERE date < NOW() ORDER BY date DESC LIMIT ".$limit." OFFSET ".$offset;
 			$articles = mysqli_fetch_all(mysqli_query($conn, $request));
 			$a1 = count($articles);
 			

@@ -8,6 +8,19 @@
 	if(isset($_GET["delete"]))
 	{
 		$stmt->query("DELETE FROM `utilisateurs` WHERE `utilisateurs`.`id` = ".$_GET["delete"]);
+		foreach($stmt->query("SELECT id FROM commentaires WHERE id_utilisateur =".$_GET["delete"])->fetchAll() as $related_comms)
+		{
+			$stmt->query("DELETE FROM commentaires WHERE id=".$related_comms);
+		}
+		
+		$related_articles = $stmt->query("SELECT id FROM articles WHERE id_utilisateur=".$_GET["delete"])->fetchAll();
+		if(!empty($related_articles))
+		{
+			foreach($related_articles as $articles)
+			{
+				$stmt->query("DELETE FROM articles WHERE id=".$articles);
+			}
+		}
 		header("location:admin.php");
 	}
 	
@@ -71,6 +84,11 @@
 				if (isset($_POST["categorie-delete"]))
 				{
 					$stmt->query("DELETE FROM categories WHERE id =".$_POST["categorie"]);
+					$stmt->query("DELETE FROM articles WHERE id_categorie =".$_POST["categorie"]);
+					foreach($stmt->query("SELECT id FROM articles WHERE id_categorie =".$_POST["categorie"])->fetchAll() as $related_articles)
+					{
+						$stmt->query("DELETE FROM commentaires WHERE id_article = ".$related_articles);
+					}
 					header("location:admin.php");
 				}
 				if(isset($_POST["categorie-change"]))
@@ -132,11 +150,11 @@
 					
 					if(isset($_GET["article-edit"]))
 					{
-						$stmt->query("UPDATE articles SET article = '".$text."', id_utilisateurs = $usr ,id_categorie = $categorie, date = '$date', titre= '$titre' WHERE id = '".$_GET['article-edit']."'");
+						$stmt->query("UPDATE articles SET article = '".$text."', id_utilisateur = $usr ,id_categorie = $categorie, date = '$date', titre= '$titre' WHERE id = '".$_GET['article-edit']."'");
 					}
 					else
 					{
-						$stmt->query('INSERT INTO `articles`(`id`, `article`, `id_utilisateurs`, `id_categorie`, `date`, `titre`) 
+						$stmt->query('INSERT INTO `articles`(`id`, `article`, `id_utilisateur`, `id_categorie`, `date`, `titre`) 
 									VALUES (NULL, "'.$text.'", "'.$usr.'", "'.$categorie.'", "'.$date.'", "'.$titre.'")');
 					}
 					header("location:admin.php");
@@ -383,7 +401,7 @@
 					<h1 id="admin-utilisateurs-title" class="center">Articles</h1>
 					<div id="admin-article-zone" class="wrap">
 						<?php foreach($stmt->query("SELECT *, articles.id as article_id FROM articles INNER JOIN utilisateurs
-									ON id_utilisateurs= utilisateurs.id ORDER BY date DESC")->fetchAll(PDO::FETCH_ASSOC) as $article) {  ?>
+									ON id_utilisateur= utilisateurs.id ORDER BY date DESC")->fetchAll(PDO::FETCH_ASSOC) as $article) {  ?>
 							<div class="flexr just-between admin-article-manage">
 								<div class="flexc just-center">
 									<span class="flexr just-start">

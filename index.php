@@ -19,7 +19,7 @@
 
 		<?php
 			$articles = $stmt->query("SELECT *, utilisateurs.login ,articles.id as article_id FROM articles
-									  INNER JOIN utilisateurs ON articles.id_utilisateurs = utilisateurs.id
+									  INNER JOIN utilisateurs ON articles.id_utilisateur = utilisateurs.id
 									  WHERE date < NOW() 
 									  ORDER BY date 
 									  LIMIT 3")->fetchAll(PDO::FETCH_ASSOC);
