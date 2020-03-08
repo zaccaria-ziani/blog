@@ -511,7 +511,6 @@ main
 	display:flex;
 	flex-direction:column;
 	flex-wrap:wrap;
-	max-height:90vh;
 	margin-bottom:1em;
 }
 
@@ -597,7 +596,20 @@ main
 	font-size:1.2em;
 	background:#eaeaea;
 	border:2px solid #b9b9b9;
-	padding:1em;
-	width:17em;
+	padding:0.1em;
+	width:fit-content;
 	height:fit-content;
+	margin:0.5em;
+}
+
+.comm-content h3
+{
+	margin-top:0;
+}
+
+.comm-date
+{
+	margin-top:-1.5em;
+	align-self:flex-start;
+	font-size:0.8em;
 }

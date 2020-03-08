@@ -33,7 +33,7 @@
 				if(isset($_GET["id"]))
 				{
 					$article = $stmt->query("SELECT *, articles.id as article_id, utilisateurs.login FROM articles
-								  INNER JOIN utilisateurs ON articles.id_utilisateurs = utilisateurs.id 
+								  INNER JOIN utilisateurs ON articles.id_utilisateur = utilisateurs.id 
 								  WHERE articles.id=".$_GET["id"])->fetch(PDO::FETCH_ASSOC);
 				}
 				else
@@ -71,12 +71,12 @@
 				{?>
 					
 					<div class="comm-content flexc">
-						<span class="flexr just-between">
+						<span class="flexc just-center">
 							<h3 class="center"><?= $com["login"] ?></h3>
-							<i class="center"><?= $com["date"] ?></i>
+							<i class="center comm-date"><?= $com["date"] ?></i>
 						</span>
 						
-						<p><?= $com["commentaire"] ?></p>
+						<p class="center"><?= $com["commentaire"] ?></p>
 					</div>
 					
 		<?php	}
