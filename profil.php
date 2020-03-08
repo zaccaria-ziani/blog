@@ -1,54 +1,103 @@
-<?php
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+	  <meta charset="utf-8">
+	  <title>BLOG</title>
+	  <link rel="stylesheet" href="bootsamp.css">
+	  <link rel="stylesheet" href="stylesheet.css">
+	</head>
 
-	session_start();
-	if (isset($_SESSION['id']))
-    {
-        $conn = mysqli_connect("localhost","root","","blog");
-        $request = 'SELECT * FROM utilisateurs WHERE id = "'.$_SESSION["id"].'"';
-        $sql = mysqli_query($conn,$request);
-        $row = mysqli_fetch_assoc($sql);
+	<body>
 
-        echo "votre login";
-        echo '"'.$row["login"].'"</br>';
-        echo "votre password";
-        echo '"'.$row["password"].'"</br>';
-        echo "votre email";
-        echo '"'.$row["email"].'"</br>';  
-        echo "votre photo de profil </br>";
-        include 'fonctionavatar.php'; 
-
-		?>
-			
-			<form  action="profil.php" method="post">
-				<label> Login :  </label>
-				<input type="text" name="login" value ="<?php echo $row['login']; ?>" />
+		<header> 
+			<?php include 'header.php'; ?>
+		</header>
 		
-				<label> Password :  </label></br>
-				<input type="password" name="mdp" value = " <?php echo $row['password']; ?> "/>
+		<main class="flexc just-center">
 
-				<label> Email :  </label>
-				<input type="text" name="email" value = " <?php echo $row['email']; ?> "/>
-				
-				<input type="submit" name="envoie" value="Modifier" />
-			</form>
+			<?php
 
-	<?php
-        
-		if (isset($_POST['modifier']))
-        {
-            $mdp = password_hash($_POST['mdp'],PASSWORD_BCRYPT,array('cost'=> 12));
-            //cryptage mdp//
-            $update = "UPDATE utilisateurs SET login ='".$_POST['login']."',email ='".$_POST['email']."',password = '$mdp' WHERE id = '".$row['id']."'";
-            $query2 = mysqli_query($connexion,$update); 
-        
-        }
+				if (isset($_SESSION['id']))
+				{
+					$user = $stmt->query("SELECT * FROM utilisateurs WHERE id =".$_SESSION["id"])->fetch(PDO::FETCH_ASSOC);
+					echo "	<form action='' method='post' class='center flexc just-between' enctype='multipart/form-data'>
+								<img src='".$user["avatar"]."' id='profil-img'>
+								<span class='flexr just-between profil-input-zone'>
+									<label for='avatar'>Image</label>
+									<input type='file' name='avatar'/>
+								</span>
+								
+								<span class='flexr just-between profil-input-zone'>
+									<label for='login'>Nom</label>
+									<input type='text' name='login' value='".$user["login"]."'/>
+								</span>
+								
+								<span class='flexr just-between profil-input-zone'>
+									<label for='password'>Nouveau mdp</label>
+									<input type='password' name='password'/>
+								</span>
+								
+								<span class='flexr just-between profil-input-zone'>
+									<label for='vpassword'>Verif Mdp</label>
+									<input type='password' name='vpassword'/>
+								</span>
+								
+								<span class='flexr just-between'>
+									<input type='submit' name='submit-btn' value='Modifier'/>
+									<input type='reset' value='Effacer' name='reset-btn'/>
+								</span>
+							</form>";
+							
+							
+					if(isset($_POST["submit-btn"]))
+					{
+						if(isset($_POST["login"]) && $_POST["login"] != $user["login"])
+						{
+							if(empty($stmt->query("SELECT login FROM utilisateurs WHERE login = '".$_POST["login"]."'")->fetch()))
+							{ 
+								$stmt->query("UPDATE utilisateurs SET login='".$_POST["login"]."' WHERE id =".$_SESSION["id"]);
+							}
+						}
+						
+						if($_POST["password"] == $_POST["vpassword"] && $_POST["password"] != "")
+						{
+							$stmt->query("UDPATE utilisateurs SET password = '".password_hash($_POST["password"], PASSWORD_BCRYPT)."' WHERE id=".$_SESSION["id"]);								
+						}
+						
+						if(isset($_FILES["avatar"]))
+						{
+							if("Images/avatars/".basename($_FILES["avatar"]["name"]) != $user["avatar"])
+							{
+								$image = $_FILES["avatar"];
+								$name = $_SESSION["id"];
+								$type = strtolower(pathinfo($image["name"], PATHINFO_EXTENSION));
+								$path = "Images/avatars/".basename($image["name"]);
+								$newName = "Images/avatars/".$name.".".$type;
+								
+								// var_dump($path, $newName);die;
+								if(file_exists($newName))
+								{
+									unlink($newName);
+									$newName = "Images/avatars/".$name.".".$type;
+								}
+								
+								move_uploaded_file($image["tmp_name"], $newName);					
+							}
+						}
+						header("location:profil.php");
+					}
+					
+				}
+				else 
+				{
+					header("location:index.php");
+				}
+			?>
 
-    }
-	else 
-    {
+		</main>
 
-        echo "Vous n'etes pas connecté veuillez vous connecté pour accédé a votre profil";
-        echo '</br><a href="connexion.php">connexion</a>';
-
-    }
-?>
+		<footer>
+			<?php include("footer.php"); ?>
+		</footer>
+	</body>
+</html>

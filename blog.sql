@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 05 mars 2020 à 15:35
+-- Généré le :  Dim 08 mars 2020 à 22:33
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
   `id_utilisateur` int(11) NOT NULL,
   `date` timestamp NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `commentaires`
@@ -108,7 +108,9 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
 INSERT INTO `commentaires` (`id`, `commentaire`, `id_article`, `id_utilisateur`, `date`) VALUES
 (1, 'A quel age a t\'il écrit tout ca ?', 9, 13, '2020-03-04 10:19:14'),
 (2, 'La joie des souvenires d\'hivers', 11, 13, '2020-03-04 10:38:58'),
-(4, 'Je ;laisse un commentaire', 8, 13, '2020-03-04 12:47:16');
+(4, 'Je ;laisse un commentaire', 8, 13, '2020-03-04 12:47:16'),
+(5, 'Ma-gni-failleque', 29, 1, '2020-03-08 17:44:12'),
+(6, 'Mais pas autant que la beautÃ©e', 29, 1, '2020-03-08 17:44:42');
 
 -- --------------------------------------------------------
 
@@ -154,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`id`, `login`, `password`, `email`, `id_droits`, `avatar`) VALUES
-(1, 'Le lion du Roi de la jungle', 'trahi', 'trahi@email.yahoo.com', 1, 'Images/avatars/1.png'),
+(1, 'Le lion du Roi de la jungle', '$2y$10$CDuuDg4bxTHZP20dDwFRzOYzxGTQLFbXUaztM/fgf/MIyuet2lYwy', 'trahi@email.yahoo.com', 1, 'Images/avatars/1.png'),
 (2, 'le malfrat du roi des rats', 'grouik', 'grouik@email.com', 1337, 'Images/avatars/2.png'),
 (3, 'Le lanceur  pot de fleur', 'J\'adore', 'monEmail@email.com', 42, 'Images/avatars/3.png'),
 (4, 'La chanteuse de loire et meuse', 'Lalalalaaaa', 'Lalala@monem;ail.mail', 42, 'Images/avatars/4.png'),
