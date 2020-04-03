@@ -512,6 +512,7 @@ main
 	flex-direction:column;
 	flex-wrap:wrap;
 	margin-bottom:1em;
+	max-height:90vh;
 }
 
 .articlebox-content
